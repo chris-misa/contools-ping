@@ -4,6 +4,13 @@ Cloudlab profile for contools ping experiments
 
 # Questions
 
+For current startHost.sh:
+  1) Is 'time' reporting correct statistics: there should be socket snd/rcv, no?
+  2) Can this script be generalized: execute an arbitrary procedure from
+      host and from container?
+
+For larger data / experiment management:
+
 How to listen for experiment termination from target nodes.
 How to copy data out of test machines? (Where to? What protocol?)
 
