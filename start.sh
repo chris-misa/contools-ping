@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Generic start routine:
 #   installs docker and that's about it
