@@ -7,16 +7,17 @@
 #
 
 # Set variables
-DATE_TAG=`date +%Y%m%d%H%M%S`
-CONTAINER_PATH="chrismisa/contools:ping"
-MY_NAME="node1"
-TARGET_NAME="node2"
-NUM_PINGS=4
-BORDER="--------------------"
-TIME="`which time` -p"
+export DATE_TAG=`date +%Y%m%d%H%M%S`
+export CONTAINER_PATH="chrismisa/contools:ping"
+export MY_NAME="node1"
+export TARGET_NAME="node2"
+export NUM_PINGS=4
+export BORDER="--------------------"
+export TIME="`which time` -p"
+export TCPDUMP_PID_LOC="tcpdump_pid"
 
 # Get ipv4 of node2
-TARGET_IPV4=`grep $TARGET_NAME /etc/hosts | cut -f 1`
+export TARGET_IPV4=`grep $TARGET_NAME /etc/hosts | cut -f 1`
 
 echo "${BORDER} ${MY_NAME} started experiment at ${DATE_TAG} ${BORDER}"
 echo "target name: ${TARGET_NAME}"
@@ -34,9 +35,13 @@ $TIME -o "${DATE_TAG}_pull_container.time" \
 echo "${BORDER} Pulled the container ${BORDER}"
 
 # Start tcpdump listening to ip traffic on this node
-sudo tcpdump -i any -w "${DATE_TAG}_${MY_NAME}.pcap" ip host $MY_NAME &
-TCPDUMP_PID=$!
-echo "${BORDER} Started tcpdump listener (pid: ${TCPDUMP_PID}) ${BORDER}"
+# ----- explicity invoke subshell to get exact pid of tcpdump process
+if [ -e $TCPDUMP_PID_LOC ]
+then
+  echo "Error: $TCPDUMP_PID_LOC already exists: experiment duplicated?"
+fi
+sudo bash -c 'tcpdump -i any -w "${DATE_TAG}_${MY_NAME}.pcap" ip host $MY_NAME & echo $! > $TCPDUMP_PID_LOC'
+echo "${BORDER} Started tcpdump listener (pid: `cat $TCPDUMP_PID_LOC`) ${BORDER}"
 
 # Start host ping sequence
 echo "${BORDER} Starting ipv4 ping from host ${BORDER}"
@@ -52,7 +57,8 @@ $TIME -o "${DATE_TAG}_container_ping.time" \
 echo "${BORDER} Finished ipv4 ping from container ${BORDER}"
 
 # Kill the tcpdump listener
-sudo kill $TCPDUMP_PID
+sudo kill `cat $TCPDUMP_PID_LOC`
+rm $TCPDUMP_PID_LOC
 echo "${BORDER} Killed tcpdump listener ${BORDER}"
 
 # Zip up the results
