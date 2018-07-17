@@ -3,8 +3,12 @@
 # Shell script to setup and initialize a raw ping experiment
 #   'active node' version
 #
+#
 # 2018, Chris Misa
 #
+
+# Notes: probably there is an overhead to all this sub-shelling:
+#        perhaps would be better to run the whole script under sudo?
 
 # Set variables
 export DATE_TAG=`date +%Y%m%d%H%M%S`
@@ -27,13 +31,13 @@ echo "target ipv4: ${TARGET_IPV4}"
 
 # Install docker
 sudo apt-get update
-$TIME_CMD -o "${FILE_PREFIX}_install_docker.time" \
-  sudo apt-get install -y docker.io
+sudo bash -c '$TIME_CMD -o "${FILE_PREFIX}_install_docker.time" \
+  apt-get install -y docker.io'
 echo "${BORDER} Installed Docker ${BORDER}"
 
 # Pull the container
-$TIME_CMD -o "${FILE_PREFIX}_pull_container.time" \
-  sudo docker pull $CONTAINER_PATH
+sudo bash -c '$TIME_CMD -o "${FILE_PREFIX}_pull_container.time" \
+  docker pull $CONTAINER_PATH'
 echo "${BORDER} Pulled the container ${BORDER}"
 
 # Start tcpdump listening to ip traffic on this node
@@ -53,9 +57,9 @@ echo "${BORDER} Finished ipv4 ping from host ${BORDER}"
 
 # Run dockerized ping sequence
 echo "${BORDER} Starting ipv4 ping from container ${BORDER}"
-$TIME_CMD -o "${FILE_PREFIX}_container_ping.time" \
-  sudo docker run --rm $CONTAINER_PATH -c $NUM_PINGS $TARGET_IPV4 \
-    > "${FILE_PREFIX}_container_ipv4.ping"
+sudo bash -c '$TIME_CMD -o "${FILE_PREFIX}_container_ping.time" \
+  docker run --rm $CONTAINER_PATH -c $NUM_PINGS $TARGET_IPV4 \
+    > "${FILE_PREFIX}_container_ipv4.ping"'
 echo "${BORDER} Finished ipv4 ping from container ${BORDER}"
 
 # Kill the tcpdump listener
