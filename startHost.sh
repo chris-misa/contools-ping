@@ -58,7 +58,7 @@ echo "${BORDER} Finished ipv4 ping from container ${BORDER}"
 
 # Kill the tcpdump listener
 sudo kill `cat $TCPDUMP_PID_LOC`
-rm $TCPDUMP_PID_LOC
+rm -f $TCPDUMP_PID_LOC
 echo "${BORDER} Killed tcpdump listener ${BORDER}"
 
 # Zip up the results
