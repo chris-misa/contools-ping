@@ -13,7 +13,8 @@ export MY_NAME="node1"
 export TARGET_NAME="node2"
 export NUM_PINGS=4
 export BORDER="--------------------"
-export TIME="`which time` -p"
+export TIME_FORMAT="real: %E, user: %U, sys: %S, mem: %K, rec: %r, snd: %s"
+export TIME="`which time` -f \"${TIME_FORMAT}\""
 export TCPDUMP_PID_LOC="tcpdump_pid"
 export FILE_PREFIX="${DATE_TAG}_${MY_NAME}"
 
