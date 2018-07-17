@@ -7,9 +7,6 @@
 # 2018, Chris Misa
 #
 
-# Notes: probably there is an overhead to all this sub-shelling:
-#        perhaps would be better to run the whole script under sudo?
-
 # Set variables
 export DATE_TAG=`date +%Y%m%d%H%M%S`
 export CONTAINER_PATH="chrismisa/contools:ping"

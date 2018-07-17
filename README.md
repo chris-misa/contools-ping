@@ -8,6 +8,9 @@ For current startHost.sh:
   1) Is 'time' reporting correct statistics: there should be socket snd/rcv, no?
   2) Can this script be generalized: execute an arbitrary procedure from
       host and from container?
+  3) Probably there is an overhead to all this sub-shelling:
+     perhaps would be better to run the whole script under sudo?
+
 
 For larger data / experiment management:
 
