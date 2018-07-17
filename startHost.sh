@@ -42,12 +42,18 @@ echo "${BORDER} Started tcpdump listener (pid: ${TCPDUMP_PID}) ${BORDER}"
 echo "${BORDER} Starting ipv4 ping from host ${BORDER}"
 $TIME -o "${DATE_TAG}_host_ping.time" \
   ping -c $NUM_PINGS $TARGET_IPV4 > "${DATE_TAG}_host_ipv4.ping"
+echo "${BORDER} Finished ipv4 ping from host ${BORDER}"
 
 # Run dockerized ping sequence
 echo "${BORDER} Starting ipv4 ping from container ${BORDER}"
 $TIME -o "${DATE_TAG}_container_ping.time" \
   sudo docker run --rm $CONTAINER_PATH -c $NUM_PINGS $TARGET_IPV4 \
     > "${DATE_TAG}_container_ipv4.ping"
+echo "${BORDER} Finished ipv4 ping from container ${BORDER}"
+
+# Kill the tcpdump listener
+sudo kill $TCPDUMP_PID
+echo "${BORDER} Killed tcpdump listener ${BORDER}"
 
 # Zip up the results
 
