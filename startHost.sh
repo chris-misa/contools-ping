@@ -13,8 +13,8 @@ export MY_NAME="node1"
 export TARGET_NAME="node2"
 export NUM_PINGS=4
 export BORDER="--------------------"
-export TIME_FORMAT="real: %E, user: %U, sys: %S, mem: %K, rec: %r, snd: %s"
-export TIME="`which time` -f \"${TIME_FORMAT}\""
+export TIME="real: %E, user: %U, sys: %S, mem: %K, rec: %r, snd: %s"
+export TIME_CMD="`which time`"
 export TCPDUMP_PID_LOC="tcpdump_pid"
 export FILE_PREFIX="${DATE_TAG}_${MY_NAME}"
 
@@ -27,12 +27,12 @@ echo "target ipv4: ${TARGET_IPV4}"
 
 # Install docker
 sudo apt-get update
-$TIME -o "${FILE_PREFIX}_install_docker.time" \
+$TIME_CMD -o "${FILE_PREFIX}_install_docker.time" \
   sudo apt-get install -y docker.io
 echo "${BORDER} Installed Docker ${BORDER}"
 
 # Pull the container
-$TIME -o "${FILE_PREFIX}_pull_container.time" \
+$TIME_CMD -o "${FILE_PREFIX}_pull_container.time" \
   sudo docker pull $CONTAINER_PATH
 echo "${BORDER} Pulled the container ${BORDER}"
 
@@ -47,13 +47,13 @@ echo "${BORDER} Started tcpdump listener (pid: `cat $TCPDUMP_PID_LOC`) ${BORDER}
 
 # Start host ping sequence
 echo "${BORDER} Starting ipv4 ping from host ${BORDER}"
-$TIME -o "${FILE_PREFIX}_host_ping.time" \
+$TIME_CMD -o "${FILE_PREFIX}_host_ping.time" \
   ping -c $NUM_PINGS $TARGET_IPV4 > "${FILE_PREFIX}_host_ipv4.ping"
 echo "${BORDER} Finished ipv4 ping from host ${BORDER}"
 
 # Run dockerized ping sequence
 echo "${BORDER} Starting ipv4 ping from container ${BORDER}"
-$TIME -o "${FILE_PREFIX}_container_ping.time" \
+$TIME_CMD -o "${FILE_PREFIX}_container_ping.time" \
   sudo docker run --rm $CONTAINER_PATH -c $NUM_PINGS $TARGET_IPV4 \
     > "${FILE_PREFIX}_container_ipv4.ping"
 echo "${BORDER} Finished ipv4 ping from container ${BORDER}"
