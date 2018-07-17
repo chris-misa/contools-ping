@@ -16,8 +16,7 @@ node2 = request.RawPC("node2")
 link1 = request.Link(members = [node1, node2])
 
 # Set scripts from repo
-# node1.addService(rspec.Execute(shell="sh", command="/local/repository/start.sh"))
-# node2.addService(rspec.Execute(shell="sh", command="/local/repository/start.sh"))
+node1.addService(rspec.Execute(shell="sh", command="/local/repository/initDocker.sh"))
 
 # Boiler plate
 portal.context.printRequestRSpec()
