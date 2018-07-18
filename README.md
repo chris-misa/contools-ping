@@ -4,6 +4,10 @@ Cloudlab profile for contools ping experiments
 
 # Questions
 
+See discussion in main contools repo for script generalization.
+
+
+
 For current startHost.sh:
   1) Is 'time' reporting correct statistics: there should be socket snd/rcv, no?
   2) Can this script be generalized: execute an arbitrary procedure from
