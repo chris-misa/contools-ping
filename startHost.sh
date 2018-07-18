@@ -1,4 +1,6 @@
 #!/bin/bash
+#######################
+# OOOOLLLLLDDDDDD
 #
 # Shell script to setup and initialize a raw ping experiment
 #   'active node' version
