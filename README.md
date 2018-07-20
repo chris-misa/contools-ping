@@ -4,35 +4,21 @@ Cloudlab profile for contools ping experiments
 
 # Questions
 
-See discussion in main contools repo for script generalization.
+## Performance Overhead
 
+### Timing
 
+Start up time:
+  Time from when user (script) issues command till when the first test packet is sent.
+  Defined the first test packet as the first packet directly implicated in the resulting
+  measurement: the tool may send DNS query packets and do various socket tests and operations
+  before this first packet is sent.
 
-For current startHost.sh:
-  1) Is 'time' reporting correct statistics: there should be socket snd/rcv, no?
-  2) Can this script be generalized: execute an arbitrary procedure from
-      host and from container?
-  3) Probably there is an overhead to all this sub-shelling:
-     perhaps would be better to run the whole script under sudo?
+Run time:
+  Time from when first packet is sent to when last packet is revd (or sent if last packet had no response).
 
-
-For larger data / experiment management:
-
-How to listen for experiment termination from target nodes.
-How to copy data out of test machines? (Where to? What protocol?)
-
-  1) Build protocol within cluster? (risks interfecence with experiment)
-
-    simple implementation using nc on some unused port:
-      1) targets launch an nc -l in the background
-      2) leader runs experiment
-      3) leader sends each target finished message
-      4) targets return their logs to leader
-      5) leader tars logs
-      6) user manually scp's log tarball out of testbed
-
-  2) Have each node scp back to some receiving server (ix-dev?)
-  3) Network filesystems?
-  4) Local script to gleen information from experiment nodes
+Tear down time:
+  Time from when last test packet is recvd (or sent if last packet had no response) to when
+  control is returned to user (script).
 
 
