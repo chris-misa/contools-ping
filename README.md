@@ -2,6 +2,15 @@
 
 Cloudlab profile for contools ping experiments
 
+# Experiment Protocol
+
+## Controller (Bash)
+
+1. Install Dependencies (docker.io, etc)
+2. Start Monitors (tcpdump, watching /proc/PID..., watching children, etc.)
+3. Bash: Experiment Script
+4. Container: Bash: Experiment Script
+
 # Questions
 
 ## Performance Overhead
