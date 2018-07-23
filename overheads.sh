@@ -20,7 +20,8 @@
 #
 
 # Some handy variables
-export PING_COMMAND='ping -c 5 google.com'
+export PING_COMMAND="ping -c 5 216.58.216.142"
+export NATIVE_PING="iputils/$PING_COMMAND"
 export CONTAINE_PID=`ps -e | grep containe | sed -E 's/ *([0-9]*) .*/\1/'`
 export DATE_TAG=`date +%Y%m%d%H%M%S`
 export B="----------"
@@ -67,7 +68,7 @@ echo "${B} Starting Experiment at $DATE_TAG ${B}"
 echo ${B} Running native under top ${B}
 top $TOP_FLAGS > ${DATE_TAG}_native.top &
 TOP_PID=$!
-$PING_COMMAND > /dev/null
+$NATIVE_PING > /dev/null
 kill $TOP_PID
 echo Done.
 sleep 5
@@ -76,9 +77,11 @@ sleep 5
 echo ${B} Running native under collectl ${B}
 collectl -f ${DATE_TAG}_native.collectl $COLLECTL_FLAGS &
 COLLECTL_PID=$!
-$PING_COMMAND > /dev/null
+$NATIVE_PING > /dev/null
+sleep 2
 kill $COLLECTL_PID
 wait $COLLECTL_PID
+collectl -w -p ${DATE_TAG}_native.collectl-* > ${DATE_TAG}_native.collectl
 echo Done.
 sleep 5
 
@@ -97,7 +100,10 @@ echo ${B} Running container under collectl ${B}
 collectl -f ${DATE_TAG}_container.collectl $COLLECTL_FLAGS &
 COLLECTL_PID=$!
 docker run --rm $PING_COMMAND > /dev/null
+sleep 2
 kill $COLLECTL_PID
+wait $COLLECTL_PID
+collectl -w -p ${DATE_TAG}_container.collectl-* > ${DATE_TAG}_container.collectl
 echo Done.
 sleep 5
 
@@ -108,13 +114,13 @@ sleep 5
 
 # Native Strace
 echo ${B} Running native under strace ${B}
-strace $STRACE_FLAGS -o ${DATE_TAG}_native.strace $PING_COMMAND > /dev/null
+strace $STRACE_FLAGS -o ${DATE_TAG}_native.strace $NATIVE_PING > /dev/null
 echo Done.
 sleep 5
 
 # Native Perf
 echo ${B} Running native under perf ${B}
-perf record $PERF_FLAGS -o ${DATE_TAG}_native.perf.data $PING_COMMAND > /dev/null
+perf record $PERF_FLAGS -o ${DATE_TAG}_native.perf.data $NATIVE_PING > /dev/null
 perf script -i ${DATE_TAG}_native.perf.data > ${DATE_TAG}_native.perf
 echo Done.
 sleep 5
