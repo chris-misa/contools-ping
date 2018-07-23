@@ -20,14 +20,16 @@
 #
 
 # Some handy variables
-export PING_COMMAND='ping -c 10 google.com'
-export CONTAINE_PID=`ps -e | grep containe | cut -d ' ' -f 1`
+export PING_COMMAND='ping -c 5 google.com'
+export CONTAINE_PID=`ps -e | grep containe | sed -E 's/ *([0-9]*) .*/\1/'`
 export DATE_TAG=`date +%Y%m%d%H%M%S`
 export B="----------"
 
 # Monitor options
-export STRACE_FLAGS="-tttTf -e trace=exec*,socket*,sendto,recvmsg"
+export STRACE_FLAGS="-tttTf -e trace=execve,socket,sendto,recvmsg"
 export PERF_FLAGS="-T -e '{syscalls:sys_enter_exec*,syscalls:sys_exit_exec*,syscalls:sys_enter_socket*,syscalls:sys_exit_socket*,syscalls:sys_enter_sendto*,syscalls:sys_exit_sendto*,syscalls:sys_enter_recvmsg*,syscalls:sys_exit_recvmsg*}'"
+export TOP_FLAGS="-b -d 1 -o PID"
+export COLLECTL_FLAGS="-sZ -i1:1"
 
 #
 # Test preconditions
@@ -55,8 +57,53 @@ fi
 #
 echo "${B} Starting Experiment at $DATE_TAG ${B}"
 
+
 #
-# Part 1: timing test
+# Part 1: Memory Test
+#   Measure memory usage with pidstat
+#
+
+# Native top
+echo ${B} Running native under top ${B}
+top $TOP_FLAGS > ${DATE_TAG}_native.top &
+TOP_PID=$!
+$PING_COMMAND > /dev/null
+kill $TOP_PID
+echo Done.
+sleep 5
+
+# Native collectl
+echo ${B} Running native under collectl ${B}
+collectl -f ${DATE_TAG}_native.collectl $COLLECTL_FLAGS &
+COLLECTL_PID=$!
+$PING_COMMAND > /dev/null
+kill $COLLECTL_PID
+wait $COLLECTL_PID
+collectl -p ${DATE_TAG}
+echo Done.
+sleep 5
+
+
+# Container top
+echo ${B} Running container under top ${B}
+top $TOP_FLAGS > ${DATE_TAG}_container.top &
+TOP_PID=$!
+docker run --rm $PING_COMMAND > /dev/null
+kill $TOP_PID
+echo Done.
+sleep 5
+
+# Container collectl
+echo ${B} Running container under collectl ${B}
+collectl -f ${DATE_TAG}_container.collectl $COLLECTL_FLAGS &
+COLLECTL_PID=$!
+docker run --rm $PING_COMMAND > /dev/null
+kill $COLLECTL_PID
+echo Done.
+sleep 5
+
+#
+# Part 2: Timing Test
 #   Trace system calls with strace and perf focused on reporting time
 #
 
@@ -74,16 +121,17 @@ echo Done.
 sleep 5
 
 # Container Strace
-echo ${B} Running container strace ${B}
+echo ${B} Running container under strace ${B}
 strace $STRACE_FLAGS -o ${DATE_TAG}_container.strace -p ${CONTAINE_PID} &
 STRACE_PID=$!
 docker run --rm $PING_COMMAND > /dev/null
 kill $STRACE_PID
+wait $STRACE_PID
 echo Done.
 sleep 5
 
 # Container Perf
-echo ${B} Running container perf ${B}
+echo ${B} Running container under perf ${B}
 perf record $PERF_FLAGS -o ${DATE_TAG}_container.perf.data -p ${CONTAINE_PID} &
 PERF_PID=$!
 docker run --rm $PING_COMMAND > /dev/null
