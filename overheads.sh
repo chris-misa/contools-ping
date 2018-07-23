@@ -79,7 +79,6 @@ COLLECTL_PID=$!
 $PING_COMMAND > /dev/null
 kill $COLLECTL_PID
 wait $COLLECTL_PID
-collectl -p ${DATE_TAG}
 echo Done.
 sleep 5
 
