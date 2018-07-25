@@ -15,10 +15,10 @@
 
 export PING_COMMAND="ping -qnc $1 $2"
 
+NATIVE_RESULT=`$PING_COMMAND | grep min/avg/max`
+NATIVE_DATA=`echo $NATIVE_RESULT | sed -E "s/.* = ([0-9\.]+)\/([0-9\.]+)\/([0-9\.]+)\/([0-9\.]+) ms/\1, \2, \3, \4/"`
+echo Native min,avg,max,stddev = $NATIVE_DATA
 
-export NATIVE_RESULT=`$PING_COMMAND | grep min/avg/max`
-
-export CONTAINER_RESULT=`docker run --rm $PING_COMMAND | grep min/avg/max`
-
-echo "Native: $NATIVE_RESULT"
-echo "Container: $CONTAINER_RESULT"
+CONTAINER_RESULT=`docker run --rm $PING_COMMAND | grep min/avg/max`
+CONTAINER_DATA=`echo $CONTAINER_RESULT | sed -E  "s/.* = ([0-9\.]+)\/([0-9\.]+)\/([0-9\.]+)\/([0-9\.]+) ms/\1, \2, \3, \4/"`
+echo Container min,avg,max,stddev = $CONTAINER_DATA
