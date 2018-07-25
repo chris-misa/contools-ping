@@ -5,20 +5,20 @@
 # and taking difference of average RTT
 #
 # Arguments:
-#   $1 host to ping
-#   $2 number of pings
+#   $1 number of pings
+#   $2 host to ping
 #
 # Assumptions:
 #   * docker is running
 #   * the ping container is tagged 'ping'
 #
 
-export PING_COMMAND="ping -qnc $2 $1"
+export PING_COMMAND="ping -qnc $1 $2"
 
 
-NATIVE_RESULT=`$PING_COMMAND | grep "round-trip min/avg/max/stddev"`
+export NATIVE_RESULT=`$PING_COMMAND | grep min/avg/max`
 
-CONTAINER_RESULT=`docker run --rm $PING_COMMAND | grep "round-trip min/avg/max/stddev"`
+export CONTAINER_RESULT=`docker run --rm $PING_COMMAND | grep min/avg/max`
 
-echo Native: $NATIVE_RESULT
-echo Container: $CONTAINER_RESULT
+echo "Native: $NATIVE_RESULT"
+echo "Container: $CONTAINER_RESULT"
