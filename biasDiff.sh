@@ -26,16 +26,16 @@ NATIVE_MIN=`cut -d ' ' -f 1 <<< $NATIVE_DATA`
 NATIVE_AVG=`cut -d ' ' -f 2 <<< $NATIVE_DATA`
 NATIVE_MAX=`cut -d ' ' -f 3 <<< $NATIVE_DATA`
 NATIVE_DEV=`cut -d ' ' -f 4 <<< $NATIVE_DATA`
-echo Native min avg max stddev = $NATIVE_MIN
+echo Native min avg max stddev = $NATIVE_MIN $NATIVE_AVG $NATIVE_MAX $NATIVE_DEV
 sleep 3
 
 echo ${B} Running container pings${B}
 CONTAINER_RESULT=`docker run --rm $PING_COMMAND | grep min/avg/max`
 CONTAINER_DATA=`echo $CONTAINER_RESULT | sed -E  "s/.* = ([0-9\.]+)\/([0-9\.]+)\/([0-9\.]+)\/([0-9\.]+) ms/\1 \2 \3 \4/"`
-echo Container min avg max stddev = $CONTAINER_DATA
-
-
+CONTAINER_MIN=`cut -d ' ' -f 1 <<< $CONTAINER_DATA`
+CONTAINER_AVG=`cut -d ' ' -f 2 <<< $CONTAINER_DATA`
+CONTAINER_MAX=`cut -d ' ' -f 3 <<< $CONTAINER_DATA`
+CONTAINER_DEV=`cut -d ' ' -f 4 <<< $CONTAINER_DATA`
+echo Container min avg max stddev = $CONTAINER_MIN $CONTAINER_AVG $CONTAINER_MAX $CONTAINER_DEV
 
 echo ${B} Results ${B}
-MIN_DIFF=`bc
-echo Difference
