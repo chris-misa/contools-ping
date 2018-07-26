@@ -14,7 +14,7 @@ Cloudlab profile for contools ping experiments
 # Notes
 
 Probably need to set up separate repo for data. . .
-
+Probably have to manually add ipv6 addresses to the link. . .
 
 
 # Questions
