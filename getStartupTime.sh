@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Attempts to measure the startup time for ths given strace results
+# Attempts to extract the startup time for the given strace results
 #
 
 if [ $# -ne 2 ]
