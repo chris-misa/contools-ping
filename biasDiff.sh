@@ -39,3 +39,7 @@ CONTAINER_DEV=`cut -d ' ' -f 4 <<< $CONTAINER_DATA`
 echo Container min avg max stddev = $CONTAINER_MIN $CONTAINER_AVG $CONTAINER_MAX $CONTAINER_DEV
 
 echo ${B} Results ${B}
+MIN_DIFF=`python -c "print($CONTAINER_MIN - $NATIVE_MIN)"`
+AVG_DIFF=`python -c "print($CONTAINER_AVG - $NATIVE_AVG)"`
+MAX_DIFF=`python -c "print($CONTAINER_MAX - $NATIVE_MAX)"`
+echo Differences min avg max = $MIN_DIFF $AVG_DIFF $MAX_DIFF
