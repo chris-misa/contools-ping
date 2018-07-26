@@ -11,6 +11,12 @@ Cloudlab profile for contools ping experiments
 3. Bash: Experiment Script
 4. Container: Bash: Experiment Script
 
+# Notes
+
+Probably need to set up separate repo for data. . .
+
+
+
 # Questions
 
 ## Performance Overhead
