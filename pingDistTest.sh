@@ -7,10 +7,14 @@
 
 #
 # Make sure to test for ipv6 connectivity!
+#
+# IP addresses currently manually configured because
+# the rspec does not enter ipv6 in /etc/hosts . . .
 
-declare -a intervals=(0.2 0.4 0.6 0.8 1.0 1.2)
-export NUM_PINGS=1000
-export TARGET_HOST="node2"
+declare -a intervals=(0.2 1.0) # (0.2 0.4 0.6 0.8 1.0 1.2)
+export NUM_PINGS=3 #1000
+export TARGET_IPV4="10.10.1.2"
+export TARGET_IPV6="fe80::eeb1:d7ff:fe85:6ae3%eno1d1"
 export DATE_TAG=`date +%Y%m%d%H%M%S`
 export B="----------"
 
@@ -28,10 +32,10 @@ do
   sleep 5
   echo Interval: $i
   echo ipv4 . . .
-  $NATIVE_PING -4 -i $i -c $NUM_PINGS $TARGET_HOST > native_v4_${i}.ping
+  $NATIVE_PING -i $i -c $NUM_PINGS $TARGET_IPV4 > native_v4_${i}.ping
   sleep 5
   echo ipv6 . . .
-  $NATIVE_PING -6 -i $i -c $NUM_PINGS $TARGET_HOST > native_v6_${i}.ping
+  $NATIVE_PING -i $i -c $NUM_PINGS $TARGET_IPV6 > native_v6_${i}.ping
 done
 
 # Run container ping sequence
@@ -41,8 +45,8 @@ do
   sleep 5
   echo Interval: $i
   echo ipv4 . . .
-  $CONTAINER_PING -4 -i $i -c $NUM_PINGS $TARGET_HOST > native_v4_${i}.ping
+  $CONTAINER_PING -i $i -c $NUM_PINGS $TARGET_IPV4 > native_v4_${i}.ping
   sleep 5
   echo ipv6 . . .
-  $CONTAINER_PING -6 -i $i -c $NUM_PINGS $TARGET_HOST > native_v6_${i}.ping
+  $CONTAINER_PING -i $i -c $NUM_PINGS $TARGET_IPV6 > native_v6_${i}.ping
 done
