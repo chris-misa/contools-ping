@@ -19,6 +19,13 @@ For a dynamic system running under one /64, we need ntppd:
 then. . .
 $ sudo ndppd -d
 
+
+/etc/docker/daemon.json
+  {
+    "ipv6": true,
+    "fixed-cidr-v6":"<subnet/80>"
+  }
+
 Other sources:
 https://forums.docker.com/t/ipv6-not-working/10171/10
 https://github.com/DanielAdolfsson/ndppd
