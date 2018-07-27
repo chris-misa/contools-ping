@@ -12,8 +12,8 @@
 # Leaving out ipv6 as we're still working on getting containers into it
 #
 
-declare -a intervals=(0.2 1.0) # (0.2 0.4 0.6 0.8 1.0 1.2)
-export NUM_PINGS=3 #1000
+declare -a intervals=(0.2 0.4 0.6 0.8 1.0 1.2)
+export NUM_PINGS=1000
 export TARGET_IPV4="10.10.1.2"
 export TARGET_IPV6="fe80::eeb1:d7ff:fe85:6ae3"
 export DATE_TAG=`date +%Y%m%d%H%M%S`
