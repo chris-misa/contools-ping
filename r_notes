@@ -1,0 +1,20 @@
+pings <- read.table(<filename>, sep="\n")
+
+hist(pings[,1])
+
+or . . .
+
+h <- hist(pings[,1], plot=F, breaks=1000)
+
+plot(h$density, log="x", type="l", xlim=c(0,100))
+
+lines(j$density)
+
+
+To save graph:
+
+pdf(file="<file name>", width=<>, height=<>)
+
+plot() | hist()
+
+dev.off()

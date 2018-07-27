@@ -1,0 +1,27 @@
+ToDo: Figure out docker ipv6 connectivity
+
+Following instructions at
+https://docs.docker.com/v17.09/engine/userguide/networking/default_network/ipv6/#using-ndp-proxying
+(i.e. splitting the hosts /64 into a /80 for docker at top of host's addr space)
+works but requires knowing ip address of container in advance.
+
+For a persistent measurement station this is a feasible solution.
+
+For a dynamic system running under one /64, we need ntppd:
+
+/etc/ndppd.conf
+  proxy <host's external interface> {
+    run <docker's subnet> {
+      iface docker 0
+    }
+  }
+
+then. . .
+$ sudo ndppd -d
+
+Other sources:
+https://forums.docker.com/t/ipv6-not-working/10171/10
+https://github.com/DanielAdolfsson/ndppd
+
+Further Reading:
+https://tools.ietf.org/html/rfc4864
