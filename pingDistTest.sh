@@ -9,21 +9,19 @@
 # IP addresses currently manually configured because
 # the rspec does not enter ipv6 in /etc/hosts . . .
 #
-# Leaving out ipv6 as we're still working on getting containers into it
-#
 
-declare -a intervals=(0.2 1.0) #(0.2 0.3 0.5 1.0)
-declare -a sizes=(16 504) #(16 56 120 504 1472)
-export NUM_PINGS=3 #2000
-export TARGET_IPV4="10.0.0.190"
-export TARGET_IPV6="2601:1c0:cb03:1a9d:226:8ff:fee3:b1b8"
+declare -a intervals=(0.2 0.3 0.5 1.0)
+declare -a sizes=(16 56 120 504 1472)
+export NUM_PINGS=1500
+export TARGET_IPV4="10.10.1.2"
+export TARGET_IPV6="fd41:98cb:a6ff:5a6a::2"
 export DATE_TAG=`date +%Y%m%d%H%M%S`
 export B="----------"
 
 export NATIVE_PING="$(pwd)/iputils/ping"
 export CONTAINER_PING="docker run --rm chrismisa/contools:ping"
 
-export NATIVE_INTERFACE="wlp2s0"
+export NATIVE_INTERFACE="eno1d1"
 
 echo $B Starting Ping Distribution Gathering $B
 mkdir $DATE_TAG
