@@ -7,17 +7,38 @@ works but requires knowing ip address of container in advance.
 
 For a persistent measurement station this is a feasible solution.
 
+Current lab solution:
+
+1) Pick a private ipv6 subnet (see: https://simpledns.com/private-ipv6)
+    e.g.  fd41:98cb:a6ff:5a6a::/64
+2) Add ipv6 addresses in this subnet to the interfaces on either end of the link
+    e.g. ip -6 add addr fd41:98cb:a6ff:5a6a::1/64 dev eno1d1
+
+3) Give docker an upper /80 of this private subnet
+    e.g.  fd41:98cb:a6ff:5a6a:ffff::/80
+
+4) Run ndppd in a tmux window (-d flag seems to be a little broken)
+
+5) Hope for the best
+
+
 For a dynamic system running under one /64, we need ntppd:
 
 /etc/ndppd.conf
   proxy <host's external interface> {
-    run <docker's subnet> {
+    rull <docker's subnet> {
       iface docker 0
     }
   }
 
 then. . .
 $ sudo ndppd -d
+
+/etc/docker/daemon.json
+  {
+    "ipv6": true,
+    "fixed-cidr-v6":"<subnet/80>"
+  }
 
 Other sources:
 https://forums.docker.com/t/ipv6-not-working/10171/10

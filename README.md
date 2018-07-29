@@ -13,9 +13,7 @@ Cloudlab profile for contools ping experiments
 
 # Notes
 
-Run > 1000 ping samples with full ipv6 connectivity.
-Add sweeping packet size.
-
+Current experiment started 7/27 at 6:00 pm will last ca 22 hours.
 
 # Questions
 
