@@ -7,15 +7,15 @@
 #
 # Initial experiment with only one ping setting
 #
-declare -a intervals=(0.5 1.0) #(0.2 0.3 0.5 1.0)
-declare -a sizes=(16 120) #(16 56 120 504 1472)
-export NUM_PINGS=3
+declare -a intervals=(0.2 0.5 1.0)
+declare -a sizes=(16 120)
+export NUM_PINGS=2000
 
-export TARGET_IPV4="10.0.0.190"
-export TARGET_IPV6="2601:1c0:cb03:1a9d:226:8ff:fee3:b1b8"
+export TARGET_IPV4="10.10.1.2"
+export TARGET_IPV6="fd41:98cb:a6ff:5a6a::2"
 
-export HOST_IPV4="10.0.0.204"
-export HOST_IPV6="2601:1c0:cb03:1a9d::ed89"
+export HOST_IPV4="10.10.1.1"
+export HOST_IPV6="fd41:98cb:a6ff:5a6a::1"
 
 export DATE_TAG=`date +%Y%m%d%H%M%S`
 export B="----------"
