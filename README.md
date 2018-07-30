@@ -13,7 +13,7 @@ Cloudlab profile for contools ping experiments
 
 # Notes
 
-Current experiment started 7/27 at 6:00 pm will last ca 22 hours.
+Current experiment start 7/30 1:00 am will last around 11-12 hours.
 
 # Questions
 
