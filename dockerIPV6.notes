@@ -26,7 +26,7 @@ For a dynamic system running under one /64, we need ntppd:
 
 /etc/ndppd.conf
   proxy <host's external interface> {
-    rull <docker's subnet> {
+    rule <docker's subnet> {
       iface docker 0
     }
   }

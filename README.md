@@ -13,9 +13,18 @@ Cloudlab profile for contools ping experiments
 
 # Notes
 
-Current experiment started 7/27 at 6:00 pm will last ca 22 hours.
+Current experiment start 7/30 1:00 am will last around 11-12 hours.
 
 # Questions
+
+## Container Bias
+
+1. Run multiple measurements from inside container and compare with measurement made from outside container. (sanity check version)
+
+2. Ping the host's interface from the container and use this RTT measure to
+dynamically compute time packets spend going through the container interface.
+
+This method is probably dependent on the container networking mode and might not be possible for all modes. . .
 
 ## Performance Overhead
 
